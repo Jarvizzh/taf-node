@@ -1,6 +1,6 @@
 ## TAF Java部分源码学习一
 
-![img1](image\img1.png)
+![img1](image/img1.png)
 
 ### Server启动流程
 
@@ -109,7 +109,7 @@
 
   4. 初始化并启动运营服务监控
 
-     ![1527583654890](image\1527583654890.png)
+     ![1527583654890](image/1527583654890.png)
 
      - OmServiceMngr :: initAndStartOmService
 
