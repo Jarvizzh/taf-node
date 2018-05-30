@@ -300,7 +300,7 @@
      }
      ```
 
-     6. 启动 NIO Server， 初始化网络IO线程模型。 （使用Reactor模式）
+    6. 启动 NIO Server， 初始化网络IO线程模型。 （使用Reactor模式）
 
      ```java
      protected void startNIOServer() throws IOException {
@@ -316,19 +316,19 @@
      }
      ```
 
-     - 第一个MainServer就是监听处理走JCE协议的客户端请求，JCE下面的传输层是TCP可靠的传输，第二个绑定在adminHost上的MainServer用于处理和Node节点交互的管理命令。
+       - 第一个MainServer就是监听处理走JCE协议的客户端请求，JCE下面的传输层是TCP可靠的传输，第二个绑定在adminHost上的MainServer用于处理和Node节点交互的管理命令。
 
-     - 另外两个则用于支持HTTP协议的请求，包括TCP和UDP两种协议，在实现上只需要绑定对应的编解码器Codec就可以了，后文重点关注JCE协议。
-     - 还有一个值得注意的地方，目前去理解当前这样的实现，发现多个Obj都会对同一个监听端口复用，也就是说在服务接收到请求的时候是没有办法直接区分开是那个Obj的请求的，只有在后面的业务线程处理时才会分发到各个服务Obj上处理。这里也就是为什么之后看到TAF对于服务连接数的管理，目前是按整个服务的总量来做的。
+       - 另外两个则用于支持HTTP协议的请求，包括TCP和UDP两种协议，在实现上只需要绑定对应的编解码器Codec就可以了，后文重点关注JCE协议。
+       - 还有一个值得注意的地方，目前去理解当前这样的实现，发现多个Obj都会对同一个监听端口复用，也就是说在服务接收到请求的时候是没有办法直接区分开是那个Obj的请求的，只有在后面的业务线程处理时才会分发到各个服务Obj上处理。这里也就是为什么之后看到TAF对于服务连接数的管理，目前是按整个服务的总量来做的。
 
-     7. 启动Session管理器
+    7. 启动Session管理器
 
         管理器实现类为SessionManagerImpl，它可提供Session的注册和回收，同时还可以绑定监听器来实现一些功能逻辑，目前主要了解其完成的两个工作：
 
         - 管理Session，定期回收过期SessionTimeout连接
         - 注册监听器记录连接数，当连接总数大于整个服务的总量限制maxConns关闭该创建的连接
 
-     8.  Register server hook
+    8.  Register server hook
 
         当服务退出时候的资源释放，这部分功能可以通过注册JVM 的 Runtime shutdownHook加以实现，主要是关闭seletor管理器和app容器 。
 
